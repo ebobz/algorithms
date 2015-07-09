@@ -1,0 +1,73 @@
+<html>
+<body>
+<h1>final fantasy xiii clock rifts</h1>
+<input type="text" value="6,6,6,4,4,5,3,5,4,4,3,2" id="rift">
+<input type="button" value="solve" onclick="solve(document.getElementById('rift').value.split(/,/))">
+<div id="solution"></div>
+<script type="text/javascript">
+
+
+function solve(rift){
+	var solution = document.getElementById('solution');
+	solution.innerHTML = 'solving...';
+	var i=0;
+	var stop=false;
+	var xx=0;
+	function solve_i(rifx, p, steps, oldp){
+		var rif = rifx.split(/,/);
+		if(rif[p] == 0 || stop || isNaN(p)){
+			return;
+		}
+		//document.write(p+'('+oldp+')'+rifx+'|'+steps+'<br>');
+
+		steps += p+",";
+
+		oldp=rif[p]*1;
+		var p1 = (rif[p]*1) + p;
+		if(p1 > rif.length){
+			p1 = p1 - rif.length;
+		}
+
+		var p2 = p - (rif[p]*1);
+		if(p2 < 0){
+			p2 = rif.length - Math.abs(p2);
+		}
+
+		rif[p] = 0;
+		
+		var zeros=true;
+		for(j=0; j<rif.length; j++){
+			if(rif[j] != 0){
+				zeros = false;
+			}
+		}
+
+		if(zeros ){
+			//alert(steps + ' | ['+ rif+']');
+			solution.innerHTML = '<big>SOLVED -> '+steps+'</big>';
+			stop=true;
+		}
+
+		var rifz = rif.join(',');
+
+		solve_i(rifz, p1, steps,oldp);
+		solve_i(rifz, p2, steps,oldp);
+
+	}
+
+	for(xx=0; xx<rift.length; xx++){
+		i=0;
+		var m="";
+		solve_i(rift.join(','), xx, m, 0);
+	}
+	if(stop==""){
+		solution.innerHTML = 'ops.. :(';
+	}
+}
+//alert(i);
+
+</script>
+
+
+</body>
+</html>
